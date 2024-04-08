@@ -6,7 +6,6 @@ import {
   LogLevelDesc,
   Checks,
   IAsyncProvider,
-  safeStringifyException,
 } from "@hyperledger/cactus-common";
 
 import {
@@ -15,7 +14,10 @@ import {
   IEndpointAuthzOptions,
 } from "@hyperledger/cactus-core-api";
 
-import { registerWebServiceEndpoint } from "@hyperledger/cactus-core";
+import {
+  handleRestEndpointException,
+  registerWebServiceEndpoint,
+} from "@hyperledger/cactus-core";
 
 import { PluginLedgerConnectorFabric } from "../plugin-ledger-connector-fabric";
 import OAS from "../../json/openapi.json";
@@ -26,10 +28,16 @@ export interface IGetBlockEndpointV1Options {
 }
 
 export class GetBlockEndpointV1 implements IWebServiceEndpoint {
+  public static readonly CLASS_NAME = "GetBlockEndpointV1";
+
   private readonly log: Logger;
 
+  public get className(): string {
+    return GetBlockEndpointV1.CLASS_NAME;
+  }
+
   constructor(public readonly opts: IGetBlockEndpointV1Options) {
-    const fnTag = "GetBlockEndpointV1#constructor()";
+    const fnTag = `${this.className}#constructor()`;
 
     Checks.truthy(opts, `${fnTag} options`);
     Checks.truthy(opts.connector, `${fnTag} options.connector`);
@@ -82,17 +90,17 @@ export class GetBlockEndpointV1 implements IWebServiceEndpoint {
   }
 
   async handleRequest(req: Request, res: Response): Promise<void> {
-    const fnTag = "GetBlockEndpointV1#handleRequest()";
-    this.log.debug(`POST ${this.getPath()}`);
+    const fnTag = `${this.className}#handleRequest()`;
+    const verbUpper = this.getVerbLowerCase().toUpperCase();
+    const reqTag = `${verbUpper} ${this.getPath()}`;
+    this.log.debug(reqTag);
 
     try {
       res.status(200).send(await this.opts.connector.getBlock(req.body));
-    } catch (error) {
-      this.log.error(`Crash while serving ${fnTag}`, error);
-      res.status(500).json({
-        message: "Internal Server Error",
-        error: safeStringifyException(error),
-      });
+    } catch (ex) {
+      const errorMsg = `${fnTag} request handler fn crashed for: ${reqTag}`;
+      await handleRestEndpointException({ errorMsg, log: this.log, error: ex, res });
     }
   }
 }
+
