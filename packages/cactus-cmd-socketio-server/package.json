@@ -1,6 +1,6 @@
 {
   "name": "@hyperledger/cactus-cmd-socketio-server",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-rc.1",
   "description": "Allows Cactus nodes to interact with HTLC ETH contracts",
   "keywords": [
     "Hyperledger",
@@ -42,8 +42,8 @@
     "build:dev:backend:postbuild": "cp -f ../../yarn.lock ./dist/"
   },
   "dependencies": {
-    "@hyperledger/cactus-common": "2.0.0-alpha.2",
-    "@hyperledger/cactus-core-api": "2.0.0-alpha.2",
+    "@hyperledger/cactus-common": "2.0.0-rc.1",
+    "@hyperledger/cactus-core-api": "2.0.0-rc.1",
     "@types/node": "18.11.9",
     "body-parser": "1.20.2",
     "config": "3.3.7",
@@ -56,17 +56,17 @@
     "fabric-network": "2.2.20",
     "http-errors": "1.6.3",
     "js-yaml": "3.14.1",
-    "jsonwebtoken": "9.0.0",
+    "jsonwebtoken": "9.0.2",
     "log4js": "6.4.1",
     "morgan": "1.10.0",
     "shelljs": "0.8.5",
-    "socket.io": "4.5.4",
+    "socket.io": "4.6.2",
     "socket.io-client-fixed-types": "4.5.4",
     "web3": "1.6.1",
     "xmlhttprequest": "1.8.0"
   },
   "devDependencies": {
-    "@hyperledger/cactus-test-tooling": "2.0.0-alpha.2",
+    "@hyperledger/cactus-test-tooling": "2.0.0-rc.1",
     "@types/config": "3.3.0",
     "@types/cookie-parser": "1.4.5",
     "@types/debug": "4.1.8",
@@ -74,7 +74,7 @@
     "@types/express": "4.17.21",
     "@types/http-errors": "1.6.3",
     "@types/js-yaml": "4.0.5",
-    "@types/jsonwebtoken": "9.0.0",
+    "@types/jsonwebtoken": "9.0.6",
     "@types/lodash": "4.14.195",
     "@types/morgan": "1.9.1",
     "@types/node": "18.11.9",

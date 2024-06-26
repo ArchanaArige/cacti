@@ -1,97 +1,56 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import CardWrapper from "../../../../components/ui/CardWrapper";
-import { Transaction } from "../../../../common/supabase-types";
-import { Block } from "../../../../common/supabase-types";
-import { supabase } from "../../../../common/supabase-client";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import { SvgIconComponent } from "@mui/icons-material";
+import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import HubIcon from "@mui/icons-material/Hub";
 
-import styles from "./Dashboard.module.css";
+import PageTitle from "../../../../components/ui/PageTitle";
+import TransactionSummary from "./TransactionSummary";
+import BlockSummary from "./BlockSummary";
+
+interface TitleWithIconProps {
+  icon: SvgIconComponent;
+  children: React.ReactNode;
+}
+
+const TitleWithIcon: React.FC<TitleWithIconProps> = ({
+  children,
+  icon: Icon,
+}) => {
+  return (
+    <Box display="flex" alignItems="center" marginBottom={2}>
+      <Icon sx={{ fontSize: 35 }} color="primary" />
+      <Typography variant="h6" component="h3" marginLeft={1}>
+        {children}
+      </Typography>
+    </Box>
+  );
+};
 
 function Dashboard() {
-  const navigate = useNavigate();
-  const [transaction, setTransaction] = useState<Transaction[]>([]);
-  const [block, setBlock] = useState<Block[]>([]);
-
-  const txnTableProps = {
-    onClick: {
-      action: (param: string) => {
-        navigate(`/eth/txn-details/${param}`);
-      },
-      prop: "id",
-    },
-    schema: [
-      { display: "transaction id", objProp: ["id"] },
-      { display: "sender/recipient", objProp: ["from", "to"] },
-      { display: "token value", objProp: ["eth_value"] },
-    ],
-  };
-
-  const blocksTableProps = {
-    onClick: {
-      action: (param: string) => {
-        navigate(`/eth/block-details/${param}`);
-      },
-      prop: "number",
-    },
-    schema: [
-      { display: "created at", objProp: ["created_at"] },
-      { display: "block number", objProp: ["number"] },
-      { display: "hash", objProp: ["hash"] },
-    ],
-  };
-  const fetchTransactions = async () => {
-    try {
-      const { data, error } = await supabase.from("transaction").select("*");
-      if (data) {
-        setTransaction(data);
-      }
-      if (error) {
-        console.error(error.message);
-      }
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  };
-
-  const fetchBlock = async () => {
-    try {
-      const { data, error } = await supabase.from("block").select("*");
-      if (data) {
-        setBlock(data);
-      }
-      if (error) {
-        console.error(error.message);
-      }
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchTransactions();
-    fetchBlock();
-  }, []);
-
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <div className={styles["dashboard-wrapper"]}>
-        <CardWrapper
-          columns={txnTableProps}
-          title="Transactions"
-          display="small"
-          trimmed={true}
-          data={transaction}
-        ></CardWrapper>
-        <CardWrapper
-          columns={blocksTableProps}
-          title="Blocks"
-          display="small"
-          trimmed={true}
-          data={block}
-        ></CardWrapper>
-      </div>
-    </div>
+    <Box>
+      <PageTitle>Dashboard</PageTitle>
+      <Stack
+        direction={{ lg: "column", xl: "row" }}
+        spacing={5}
+        divider={<Divider orientation="vertical" flexItem />}
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Box width={"80%"}>
+          <TitleWithIcon icon={HubIcon}>Blocks</TitleWithIcon>
+          <BlockSummary />
+        </Box>
+
+        <Box width={"80%"}>
+          <TitleWithIcon icon={ReceiptOutlinedIcon}>Transactions</TitleWithIcon>
+          <TransactionSummary />
+        </Box>
+      </Stack>
+    </Box>
   );
 }
 

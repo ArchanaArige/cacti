@@ -1,6 +1,6 @@
 {
   "name": "@hyperledger/cactus-plugin-keychain-memory",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-rc.1",
   "description": "Dummy keychain implementation doing NO encryption and storing everything in-memory. Only suitable for development and testing.",
   "keywords": [
     "Hyperledger",
@@ -58,9 +58,11 @@
     "webpack:dev:web": "webpack --env=dev --target=web --config ../../webpack.config.js"
   },
   "dependencies": {
-    "@hyperledger/cactus-common": "2.0.0-alpha.2",
-    "@hyperledger/cactus-core": "2.0.0-alpha.2",
-    "@hyperledger/cactus-core-api": "2.0.0-alpha.2",
+    "@bufbuild/protobuf": "1.8.0",
+    "@connectrpc/connect": "1.4.0",
+    "@hyperledger/cactus-common": "2.0.0-rc.1",
+    "@hyperledger/cactus-core": "2.0.0-rc.1",
+    "@hyperledger/cactus-core-api": "2.0.0-rc.1",
     "axios": "1.6.0",
     "express": "4.19.2",
     "prom-client": "13.2.0",
@@ -69,9 +71,7 @@
   },
   "devDependencies": {
     "@bufbuild/buf": "1.30.0",
-    "@bufbuild/protobuf": "1.8.0",
     "@bufbuild/protoc-gen-es": "1.8.0",
-    "@connectrpc/connect": "1.4.0",
     "@connectrpc/protoc-gen-connect-es": "1.4.0",
     "@types/body-parser": "1.19.4",
     "@types/express": "4.17.21",
